@@ -13,6 +13,12 @@ function data()
  }
  else
  {
-    return true;
+   alert("Form Submitted Successfully!");
+    console.log("First Name: " + a);
+    console.log("Last Name: " + b);
+    console.log("Email: " + c);
+    console.log("Phone Number: " + d);
+    console.log("Message: " + e);
+    return false;
  }
 }
