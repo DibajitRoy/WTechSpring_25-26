@@ -16,3 +16,8 @@ border-radius:8px;
 background:white;
 text-align:left;
 }
+legend{
+font-weight:bold;
+text-align:left;
+font-size:18px;
+}
