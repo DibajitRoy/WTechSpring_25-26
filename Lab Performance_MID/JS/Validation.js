@@ -9,4 +9,6 @@ function calculateTotal(){
      quantity = 0;
      quantityInput.value = 0;
     }
+    let total = unitPrice * quantity * days;
+    totalPriceInput.value = total;
 }
