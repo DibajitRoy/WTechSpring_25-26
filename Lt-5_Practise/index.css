@@ -1,0 +1,35 @@
+body {
+    font-family: Arial;
+    text-align: center;
+    margin: 0;
+}
+
+header {
+    padding: 15px;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+fieldset {
+    width: 350px;
+    margin: auto;
+    padding: 15px;
+    border: 1px solid black;
+}
+
+textarea {
+    width: 90%;
+    height: 120px;
+}
+
+button {
+    background-color: rgb(72, 228, 58);
+    margin-top: 10px;
+    padding: 5px 10px;
+}
+
+.result-box {
+    margin-top: 20px;
+}
