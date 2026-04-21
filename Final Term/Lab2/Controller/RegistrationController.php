@@ -2,127 +2,140 @@
 session_start();
 
 $name = "";
-$password = "";
 $email = "";
 $website = "";
 $comment = "";
+$password = "";
 $gender = "";
 
 $nameErr = "";
-$passwordErr = "";
 $emailErr = "";
 $websiteErr = "";
 $commentErr = "";
+$passwordErr = "";
 $genderErr = "";
 
 $datafile = "../data.json";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $name = isset($_POST["name"]) ? $_POST["name"] : "";
+$email = isset($_POST["email"]) ? $_POST["email"] : "";
+$website = isset($_POST["website"]) ? $_POST["website"] : "";
+$comment = isset($_POST["comment"]) ? $_POST["comment"] : "";
+$password = isset($_POST["password"]) ? $_POST["password"] : "";
+$gender = isset($_POST["gender"]) ? $_POST["gender"] : "";
 
-    if (isset($_POST["name"])) {
-        $name = trim($_POST["name"]);
-    }
-
-    if (isset($_POST["password"])) {
-        $password = trim($_POST["password"]);
-    }
-
-    if (isset($_POST["email"])) {
-        $email = trim($_POST["email"]);
-    }
-
-    if (isset($_POST["website"])) {
-        $website = trim($_POST["website"]);
-    }
-
-    if (isset($_POST["comment"])) {
-        $comment = trim($_POST["comment"]);
-    }
-
-    if (isset($_POST["gender"])) {
-        $gender = trim($_POST["gender"]);
-    }
-
-    $isValid = true;
-
-    if (empty($name)) {
-        $nameErr = "Name is required";
-        $isValid = false;
-    } elseif (strlen($name) < 5) {
-        $nameErr = "Name must be at least 5 characters";
-        $isValid = false;
-    }
-
-    if (empty($password)) {
-        $passwordErr = "Password is required";
-        $isValid = false;
-    } elseif (strlen($password) < 4) {
-        $passwordErr = "Password must be at least 4 characters";
-        $isValid = false;
-    }
-
-    if (empty($email)) {
-        $emailErr = "Email is required";
-        $isValid = false;
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $emailErr = "Invalid email format";
-        $isValid = false;
-    }
-
-    if (empty($website)) {
-        $websiteErr = "Website is required";
-        $isValid = false;
-    }
-
-    if (empty($comment)) {
-        $commentErr = "Comment is required";
-        $isValid = false;
-    }
-
-    if (empty($gender)) {
-        $genderErr = "Gender is required";
-        $isValid = false;
-    }
-
-    if ($isValid) {
-
+    if (!empty($name) && strlen($name) >= 5)
+    {
         $_SESSION["name"] = $name;
         setcookie("name", $name, time() + 3600, "/");
+    }
+    else
+    {
+        $nameErr = "Name must be at least 5 characters!";
+    }
 
+    if (!empty($email) && preg_match("/^[^ ]+@[^ ]+\.[a-z]{2,3}$/", $email))
+    {
+        $_SESSION["email"] = $email;
+        setcookie("email", $email, time() + 3600, "/");
+    }
+    else
+    {
+        $emailErr = "Invalid Email Format!";
+    }
+
+    if (!empty($website) && preg_match("/\b(https?:\/\/)?[a-z0-9.-]+\.[a-z]{2,}\b/i", $website))
+    {
+        $_SESSION["website"] = $website;
+        setcookie("website", $website, time() + 3600, "/");
+    }
+    else
+    {
+        $websiteErr = "Invalid Website Format!";
+    }
+
+    if (!empty($comment))
+    {
+        $_SESSION["comment"] = $comment;
+        setcookie("comment", $comment, time() + 3600, "/");
+    }
+    else
+    {
+        $commentErr = "Comment cannot be empty!";
+    }
+
+    if (!empty($password) && strlen($password) >= 4)
+    {
+        $_SESSION["password"] = $password;
+        setcookie("password", $password, time() + 3600, "/");
+    }
+    else
+    {
+        $passwordErr = "Password must be minimum 4 characters!";
+    }
+
+    if (!empty($gender))
+    {
+        $_SESSION["gender"] = $gender;
+        setcookie("gender", $gender, time() + 3600, "/");
+    }
+    else
+    {
+        $genderErr = "Please Select Gender!";
+    }
+
+    if (
+        empty($nameErr) &&
+        empty($emailErr) &&
+        empty($websiteErr) &&
+        empty($commentErr) &&
+        empty($passwordErr) &&
+        empty($genderErr)
+    )
+    {
         $formdata = array(
             "name" => $name,
-            "password" => $password,
             "email" => $email,
             "website" => $website,
             "comment" => $comment,
+            "password" => $password,
             "gender" => $gender
         );
 
-        if (file_exists($datafile)) {
+        if (file_exists($datafile))
+        {
             $existdata = file_get_contents($datafile);
             $tempdata = json_decode($existdata, true);
-        } else {
+        }
+        else
+        {
             $tempdata = array();
         }
 
-        if (!is_array($tempdata)) {
+        if (!is_array($tempdata))
+        {
             $tempdata = array();
         }
 
         $tempdata[] = $formdata;
+
         $jsondata = json_encode($tempdata, JSON_PRETTY_PRINT);
 
-        if (file_put_contents($datafile, $jsondata)) {
-            echo "Data Saved Successfully!";
-        } else {
+        if (file_put_contents($datafile, $jsondata))
+        {
+            echo "Form Submitted Successfully!<br>";
+            echo "Data Saved<br>";
+            echo "Welcome Back";
+        }
+        else
+        {
             echo "Please Try Again";
         }
-    }
 
-    if (isset($_SESSION['name']) || isset($_COOKIE['name'])) {
-        echo "<br>Welcome Back";
-    } else {
-        echo "<br>Log in Again";
+        $data = file_get_contents($datafile);
+        $mydata = json_decode($data, true);
     }
 }
 ?>
