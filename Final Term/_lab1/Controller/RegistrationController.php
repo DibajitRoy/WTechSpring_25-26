@@ -1,71 +1,87 @@
 <?php
+session_start();
 
-$name = $email = $website = $comment = $gender = "";
-$password = $validpassword = "";
+$name = "";
+$email = "";
+$website = "";
+$comment = "";
+$password = "";
+$gender = "";
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST["name"];
+
+    if (!empty($name) && strlen($name) >= 5) {
+
+        $_SESSION["name"] = $name;
+        setcookie("name", $name, time() + 3600, "/");
+    }
+    else {
+        echo "Name must be at least 5 characters!<br>";
+    }
+    $email = $_POST["email"];
 
     
-    if (isset($_POST["name"])) {
-        $name = $_POST["name"];
+    if (!empty($email) && preg_match("/^[^ ]+@[^ ]+\.[a-z]{2,3}$/", $email)) {
 
-        if (!empty($name) && strlen($name) >= 5 && preg_match("/^[a-zA-Z ]+$/", $name)) {
-            echo "User Name: " . $name . "<br>";
-        } else {
-            echo "User Name must be at least 5 characters & only letters<br>";
-        }
+        $_SESSION["email"] = $email;
+        setcookie("email", $email, time() + 3600, "/");
     }
-
-   
-    if (isset($_POST["email"])) {
-        $email = $_POST["email"];
-
-        if (!empty($email) && preg_match("/^[^ ]+@[^ ]+\.[a-z]{2,3}$/", $email)) {
-            echo "Email: " . $email . "<br>";
-        } else {
-            echo "Invalid Email format<br>";
-        }
+    else {
+        echo "Invalid Email Format!<br>";
     }
+    $website = $_POST["website"];
 
-    
-    if (isset($_POST["website"])) {
-        $website = $_POST["website"];
+    if (!empty($website) && preg_match("/\b(https?:\/\/)?[a-z0-9.-]+\.[a-z]{2,}\b/", $website)) {
 
-        if (!empty($website) && preg_match("/\b(https?:\/\/)?[a-z0-9.-]+\.[a-z]{2,}\b/", $website)) {
-            echo "Website: " . $website . "<br>";
-        } else {
-            echo "Invalid Website<br>";
-        }
+        $_SESSION["website"] = $website;
+        setcookie("website", $website, time() + 3600, "/");
     }
-
-    
-    if (isset($_POST["comment"])) {
-        $comment = $_POST["comment"];
-
-        if (!empty($comment)) {
-            echo "Comment: " . $comment . "<br>";
-        } else {
-            echo "Comment is required<br>";
-        }
+    else {
+        echo "Invalid Website Format!<br>";
     }
+    $comment = $_POST["comment"];
 
-    
-    if (isset($_POST["password"])) {
-        $password = $_POST["password"];
+    if (!empty($comment)) {
 
-        if (!empty($password) && preg_match("/^.{4,}$/", $password)) {
-            echo "Password: " . $password . "<br>";
-        } else {
-            echo "Password must be minimum 4 characters<br>";
-        }
+        $_SESSION["comment"] = $comment;
+        setcookie("comment", $comment, time() + 3600, "/");
     }
+    else {
+        echo "Comment cannot be empty!<br>";
+    }
+    $password = $_POST["password"];
 
-    
+    if (!empty($password) && strlen($password) >= 4) {
+
+        $_SESSION["password"] = $password;
+        setcookie("password", $password, time() + 3600, "/");
+    }
+    else {
+        echo "Password must be minimum 4 characters!<br>";
+    }
     if (isset($_POST["gender"])) {
+
         $gender = $_POST["gender"];
-        echo "Gender: " . $gender . "<br>";
-    } else {
-        echo "Please select gender<br>";
+
+        $_SESSION["gender"] = $gender;
+        setcookie("gender", $gender, time() + 3600, "/");
+    }
+    else {
+        echo "Please Select Gender!<br>";
+    }
+    if (
+        isset($_SESSION["name"]) &&
+        isset($_SESSION["email"]) &&
+        isset($_SESSION["website"]) &&
+        isset($_SESSION["comment"]) &&
+        isset($_SESSION["password"]) &&
+        isset($_SESSION["gender"])
+    ) {
+        echo "Form Submitted Successfully!<br>";
+        echo "Welcome Back";
     }
 }
 ?>

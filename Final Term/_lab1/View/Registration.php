@@ -1,6 +1,7 @@
 <?php
 include "../Controller/RegistrationController.php";
 ?>
+
 <!DOCTYPE html>
 <html>
 <body>
@@ -13,6 +14,14 @@ include "../Controller/RegistrationController.php";
             <td>
                 <input type="text" name="name">
                 <?php echo $name; ?>
+            </td>
+        </tr>
+        
+        <tr>
+            <td><label>Password:</label></td>
+            <td>
+                <input type="password" name="password">
+                <?php echo $password; ?>
             </td>
         </tr>
 
@@ -39,6 +48,7 @@ include "../Controller/RegistrationController.php";
                 <?php echo $comment; ?>
             </td>
         </tr>
+
 
         <tr>
             <td><label>Gender:</label></td>
